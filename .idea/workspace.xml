@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5b0b2b8a-111c-440f-aaca-308afa856e4d" name="Default Changelist" comment="" />
+    <list default="true" id="5b0b2b8a-111c-440f-aaca-308afa856e4d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/game.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -11,6 +15,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -30,7 +35,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../cs5410-tristan-thomas-assn2" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -43,10 +48,21 @@
       <option name="presentableId" value="Default" />
       <updated>1582314197074</updated>
       <workItem from="1582314198261" duration="457000" />
+      <workItem from="1583716445411" duration="5055000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="399" y="503" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1583719272475">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="399" y="503" key="#com.intellij.fileTypes.FileTypeChooser/-3840.-514.2560.1413/0.0.2560.1400@0.0.2560.1400" timestamp="1583719272475" />
+    <state x="1060" y="476" key="FileChooserDialogImpl" timestamp="1583719030875">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1060" y="476" key="FileChooserDialogImpl/-3840.-514.2560.1413/0.0.2560.1400@0.0.2560.1400" timestamp="1583719030875" />
   </component>
 </project>

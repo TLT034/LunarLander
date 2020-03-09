@@ -1,10 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang = "en-US">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset = "UTF-8">
+    <title>Tristan's Lunar Lander</title>
+    <link rel = "stylesheet" type = "text/css" href = "styles/game.css">
+    <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet'>
 </head>
-<body>
-
+<body onload = "MyGame.game.initialize()">
+<div id = "game">
+    <div id = "main-menu" class = "screen">
+        <h1>Tristan's Lunar Lander</h1>
+        <ul class = "menu">
+            <li><button id = "new-game-button">New&nbsp;Game</button></li>
+            <li><button id = "high-scores-button">High&nbsp;Scores</button></li>
+            <li><button id = "controls-button">Controls</button></li>
+            <li><button id = "credits-button">Credits</button></li>
+        </ul>
+    </div>
+    <div id = "game-play" class = "screen">
+        <canvas id = "canvas" width = "1250" height = "1000"></canvas>
+    </div>
+    <div id = "high-scores" class = "screen">
+        <h1>High Scores</h1>
+        <ol id = "high-score-list"></ol>
+        <ul class = "menu">
+            <li><button id = "high-scores-back-button">Back</button></li>
+        </ul>
+    </div>
+    <div id = "controls" class = "screen">
+        <h1>Controls</h1>
+        <ul class = "menu">
+            <li><button id = "controls-back-button">Back</button></li>
+        </ul>
+    </div>
+    <div id = "credits" class = "screen">
+        <h1>About</h1>
+        <p>Developed by</p>
+        <p>Tristan Thomas</p>
+        <p>March 2020</p>
+        <ul class = "menu">
+            <li><button id = "credits-back-button">Back</button></li>
+        </ul>
+    </div>
+</div>
 </body>
 </html>
+
+<script>
+    let MyGame = {
+        screens : {},
+        lastScore: null
+    };
+</script>
+
+<script src = "scripts/game.js"></script>
+<script src = "scripts/main-menu.js"></script>
+<script src = "scripts/controls.js"></script>
+<script src = "scripts/gameplay.js"></script>
+<script src = "scripts/highscores.js"></script>
+<script src = "scripts/credits.js"></script>
