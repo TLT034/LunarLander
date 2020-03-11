@@ -37,7 +37,7 @@ MyGame.game = (function(screens) {
         //
         // Go through each of the screens and tell them to initialize
         for (let screen in screens) {
-            if (screens.hasOwnProperty(screen) && screen !== 'game-play') {
+            if (screens.hasOwnProperty(screen)) {
                 screens[screen].initialize();
             }
         }

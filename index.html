@@ -2,14 +2,14 @@
 <html lang = "en-US">
 <head>
     <meta charset = "UTF-8">
-    <title>Tristan's Lunar Lander</title>
+    <title>Lunar Lander</title>
     <link rel = "stylesheet" type = "text/css" href = "styles/game.css">
     <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet'>
 </head>
 <body onload = "MyGame.game.initialize()">
 <div id = "game">
     <div id = "main-menu" class = "screen">
-        <h1>Tristan's Lunar Lander</h1>
+        <h1>Lunar Lander</h1>
         <ul class = "menu">
             <li><button id = "new-game-button">New&nbsp;Game</button></li>
             <li><button id = "high-scores-button">High&nbsp;Scores</button></li>
@@ -49,13 +49,23 @@
 <script>
     let MyGame = {
         screens : {},
-        lastScore: null
+        input: {},
+        objects: {},
+        render: []
     };
 </script>
 
+<script src = "scripts/objects/space-ship.js"></script>
+
+<script src = "scripts/render/core.js"></script>
+<script src = "scripts/render/terrain.js"></script>
+<script src = "scripts/render/space-ship.js"></script>
+
 <script src = "scripts/game.js"></script>
+<script src = "scripts/input-keyboard.js"></script>
+
 <script src = "scripts/main-menu.js"></script>
 <script src = "scripts/controls.js"></script>
-<script src = "scripts/gameplay.js"></script>
+<script src = "scripts/game-play.js"></script>
 <script src = "scripts/highscores.js"></script>
 <script src = "scripts/credits.js"></script>

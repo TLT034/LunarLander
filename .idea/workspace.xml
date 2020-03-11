@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b0b2b8a-111c-440f-aaca-308afa856e4d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/scripts/game-play.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/menu-background.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/menu-background1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/menu-background2.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/game.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/game.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/gameplay.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/game.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/game.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +41,20 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../cs5410-tristan-thomas-assn2" />
+    <property name="js.buildTools.grunt.grunt-cli.package" value="" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Tristan\repos\school\cs5410\cs5410-thomas-tristan-assn3\scripts" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="js.build_tools.grunt">
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -48,7 +67,9 @@
       <option name="presentableId" value="Default" />
       <updated>1582314197074</updated>
       <workItem from="1582314198261" duration="457000" />
-      <workItem from="1583716445411" duration="5055000" />
+      <workItem from="1583716445411" duration="5321000" />
+      <workItem from="1583806354788" duration="22197000" />
+      <workItem from="1583883362752" duration="271000" />
     </task>
     <servers />
   </component>
@@ -56,6 +77,10 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="94" y="356" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1583809883716">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="94" y="356" key="#com.intellij.execution.impl.EditConfigurationsDialog/-3840.-514.2560.1413/0.0.2560.1400@0.0.2560.1400" timestamp="1583809883716" />
     <state x="399" y="503" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1583719272475">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
