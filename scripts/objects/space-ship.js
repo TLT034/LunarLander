@@ -1,11 +1,23 @@
+
+function degToRad(degrees){
+    return degrees * Math.PI/180;
+}
+
+
 // --------------------------------------------------------------
 //
-// Creates a Logo object, with functions for managing state.
+// Creates a SpaceShip object, with functions for managing state.
 //
 // spec = {
-//    imageSrc: ,   // Web server location of the image
-//    center: { x: , y: },
-//    size: { width: , height: }
+//         imageSrc: image,
+//         center: { x: , y: },
+//         size: { width: , height:  },
+//         speed: { rotation: , x: , y: },
+//         maxSpeed: {x: , y: },
+//         minSpeed: {x: , y: },
+//         gravity: ,
+//         thrustPower: ,
+//         thrustActive: bool
 // }
 //
 // --------------------------------------------------------------
@@ -23,11 +35,16 @@ MyGame.objects.SpaceShip = function(spec) {
 
     function rotateLeft(elapsedTime) {
         rotation -= (spec.speed.rotation * elapsedTime);
-        console.log(rotation);
+        if (rotation < degToRad(-90)) {
+            rotation = degToRad(-90);
+        }
     }
 
     function rotateRight(elapsedTime) {
         rotation += (spec.speed.rotation * elapsedTime);
+        if (rotation > degToRad(90)) {
+            rotation = degToRad(90);
+        }
     }
     
     function move() {
@@ -41,7 +58,8 @@ MyGame.objects.SpaceShip = function(spec) {
     }
 
     function applyThrust(elapsedTime){
-        spec.speed.y -= (spec.thrustPower * elapsedTime);
+        spec.speed.x += (spec.thrustPower * elapsedTime) * Math.sin(rotation);
+        spec.speed.y -= (spec.thrustPower * elapsedTime) * Math.cos(rotation);
 
         if (spec.speed.y < spec.minSpeed.y) {
             spec.speed.y = spec.minSpeed.y;
@@ -54,37 +72,13 @@ MyGame.objects.SpaceShip = function(spec) {
         }
     }
 
-    // function moveLeft(elapsedTime) {
-    //     spec.center.x -= (spec.moveRate * elapsedTime);
-    // }
-    //
-    // function moveRight(elapsedTime) {
-    //     spec.center.x += (spec.moveRate * elapsedTime);
-    // }
-    //
-    // function moveUp(elapsedTime) {
-    //     spec.center.y -= (spec.moveRate * elapsedTime);
-    // }
-    //
-    // function moveDown(elapsedTime) {
-    //     spec.center.y += (spec.moveRate * elapsedTime);
-    // }
-
-    function moveTo(pos) {
-        spec.center.x = pos.x;
-        spec.center.y = pos.y;
-    }
 
     let api = {
         rotateLeft: rotateLeft,
         rotateRight: rotateRight,
         move: move,
         applyThrust: applyThrust,
-        // moveLeft: moveLeft,
-        // moveRight: moveRight,
-        // moveUp: moveUp,
-        // moveDown: moveDown,
-        moveTo: moveTo,
+
         get imageReady() { return imageReady; },
         get rotation() { return rotation; },
         get image() { return image; },

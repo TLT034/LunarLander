@@ -1,4 +1,4 @@
-MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input) {
+MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input, controls) {
     'use strict';
 
     let lastTimeStamp = performance.now();
@@ -10,11 +10,11 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         imageSrc: 'assets/space-ship.png',
         center: { x: graphics.canvas.width / 2, y: graphics.canvas.height / 4},
         size: { width: 50, height: 75 },
-        speed: { rotation: .003, gravity: 0, x: 0, y: 0},
-        maxSpeed: {x: 1, y: 3},
-        minSpeed: {x: -1, y: -2},
-        gravity: .05,
-        thrustPower: .01,
+        speed: { rotation: .002, x: 0, y: 0},
+        maxSpeed: {x: 2, y: 9},
+        minSpeed: {x: -2, y: -2},
+        gravity: .02,
+        thrustPower: .005,
         thrustActive: false
     });
 
@@ -148,9 +148,9 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         lastTimeStamp = performance.now();
         cancelNextRequest = false;
         requestAnimationFrame(gameLoop);
-        myKeyboard.register('a', spaceShip.rotateLeft);
-        myKeyboard.register('d', spaceShip.rotateRight);
-        myKeyboard.register('w', spaceShip.applyThrust);
+        myKeyboard.register(controls['Rotate Left'], spaceShip.rotateLeft);
+        myKeyboard.register(controls['Rotate Right'], spaceShip.rotateRight);
+        myKeyboard.register(controls['Thrust'], spaceShip.applyThrust);
     }
 
     return {
@@ -158,4 +158,4 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         run : run
     };
 
-}(MyGame.game, MyGame.objects, MyGame.render, MyGame.graphics, MyGame.input));
+}(MyGame.game, MyGame.objects, MyGame.render, MyGame.graphics, MyGame.input, MyGame.controls));
