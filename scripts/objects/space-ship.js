@@ -22,15 +22,36 @@ MyGame.objects.SpaceShip = function(spec) {
     image.src = spec.imageSrc;
 
     function rotateLeft(elapsedTime) {
-        rotation -= (spec.rotationSpeed * elapsedTime);
+        rotation -= (spec.speed.rotation * elapsedTime);
+        console.log(rotation);
     }
 
     function rotateRight(elapsedTime) {
-        rotation += (spec.rotationSpeed * elapsedTime);
+        rotation += (spec.speed.rotation * elapsedTime);
     }
     
-    function applyGravity() {
+    function move() {
+        spec.speed.y += spec.gravity;
+        if (spec.speed.y > spec.maxSpeed.y) {
+            spec.speed.y = spec.maxSpeed.y;
+        }
 
+        spec.center.x += spec.speed.x;
+        spec.center.y += spec.speed.y;
+    }
+
+    function applyThrust(elapsedTime){
+        spec.speed.y -= (spec.thrustPower * elapsedTime);
+
+        if (spec.speed.y < spec.minSpeed.y) {
+            spec.speed.y = spec.minSpeed.y;
+        }
+        if (spec.speed.x > spec.maxSpeed.x) {
+            spec.speed.x = spec.maxSpeed.x;
+        }
+        else if (spec.speed.x < spec.minSpeed.x) {
+            spec.speed.x = spec.minSpeed.x;
+        }
     }
 
     // function moveLeft(elapsedTime) {
@@ -57,6 +78,8 @@ MyGame.objects.SpaceShip = function(spec) {
     let api = {
         rotateLeft: rotateLeft,
         rotateRight: rotateRight,
+        move: move,
+        applyThrust: applyThrust,
         // moveLeft: moveLeft,
         // moveRight: moveRight,
         // moveUp: moveUp,

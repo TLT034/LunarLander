@@ -10,8 +10,12 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         imageSrc: 'assets/space-ship.png',
         center: { x: graphics.canvas.width / 2, y: graphics.canvas.height / 4},
         size: { width: 50, height: 75 },
-        rotationSpeed: .003,
-        gravity: .1
+        speed: { rotation: .003, gravity: 0, x: 0, y: 0},
+        maxSpeed: {x: 1, y: 3},
+        minSpeed: {x: -1, y: -2},
+        gravity: .05,
+        thrustPower: .01,
+        thrustActive: false
     });
 
     function generateTerrain(canvas) {
@@ -103,7 +107,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
     }
 
     function update() {
-
+        spaceShip.move();
     }
 
     function render() {
@@ -146,6 +150,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         requestAnimationFrame(gameLoop);
         myKeyboard.register('a', spaceShip.rotateLeft);
         myKeyboard.register('d', spaceShip.rotateRight);
+        myKeyboard.register('w', spaceShip.applyThrust);
     }
 
     return {
