@@ -3,6 +3,9 @@ function degToRad(degrees){
     return degrees * Math.PI/180;
 }
 
+function radToDeg(radians){
+    return radians * 180/Math.PI;
+}
 
 // --------------------------------------------------------------
 //
@@ -17,7 +20,8 @@ function degToRad(degrees){
 //         minSpeed: {x: , y: },
 //         gravity: ,
 //         thrustPower: ,
-//         thrustActive: bool
+//         thrustActive: bool,
+//         fuel: num
 // }
 //
 // --------------------------------------------------------------
@@ -49,9 +53,6 @@ MyGame.objects.SpaceShip = function(spec) {
     
     function move() {
         spec.speed.y += spec.gravity;
-        if (spec.speed.y > spec.maxSpeed.y) {
-            spec.speed.y = spec.maxSpeed.y;
-        }
 
         spec.center.x += spec.speed.x;
         spec.center.y += spec.speed.y;
@@ -70,6 +71,8 @@ MyGame.objects.SpaceShip = function(spec) {
         else if (spec.speed.x < spec.minSpeed.x) {
             spec.speed.x = spec.minSpeed.x;
         }
+
+        spec.fuel -= elapsedTime/100;
     }
 
 
@@ -83,8 +86,17 @@ MyGame.objects.SpaceShip = function(spec) {
         get rotation() { return rotation; },
         get image() { return image; },
         get center() { return spec.center; },
-        get size() { return spec.size; }
+        get size() { return spec.size; },
+        get fuel() { return spec.fuel },
+        get verticalSpeed() { return spec.speed.y * 3},
+        get angle() {
+            let angle = radToDeg(rotation);
+            if (angle < 0) {
+                angle = angle + 360;
+            }
+            return angle
+        }
     };
 
     return api;
-}
+};

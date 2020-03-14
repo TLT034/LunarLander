@@ -10,12 +10,13 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         imageSrc: 'assets/space-ship.png',
         center: { x: graphics.canvas.width / 2, y: graphics.canvas.height / 4},
         size: { width: 50, height: 75 },
-        speed: { rotation: .002, x: 0, y: 0},
-        maxSpeed: {x: 2, y: 9},
+        speed: { rotation: .0015, x: 0, y: 0},
+        maxSpeed: {x: 2 },
         minSpeed: {x: -2, y: -2},
-        gravity: .02,
-        thrustPower: .005,
-        thrustActive: false
+        gravity: .01,
+        thrustPower: .0025,
+        thrustActive: false,
+        fuel: 100,
     });
 
     function generateTerrain(canvas) {
@@ -101,6 +102,40 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         }
     }
 
+    function checkCollision(){
+        let len = terrain.length -1;
+        for (let i = 0; i < len; i++) {
+            if (rectIntersection(terrain[i], terrain[i+1], spaceShip.center, spaceShip.size)) {
+                return true;
+            }
+        }
+        return false;
+
+        function rectIntersection(p1, p2, pos, size) {
+            // pos: the center position of the ship
+            let topLeftCorner = {x: pos.x - size.width/2, y: pos.y - size.height/2};
+            let topRightCorner = {x: pos.x + size.width/2, y: pos.y - size.height/2};
+            let bottomLeftCorner = {x: pos.x - size.width/2, y: pos.y + size.height/2};
+            let bottomRightCorner = {x: pos.x + size.width/2, y: pos.y + size.height/2};
+
+            let left = lineIntersection(p1, p2, topLeftCorner, bottomLeftCorner);
+            let right = lineIntersection(p1, p2, topRightCorner, bottomRightCorner);
+            let top = lineIntersection(p1, p2, topLeftCorner, topRightCorner);
+            let bottom = lineIntersection(p1, p2, bottomLeftCorner, bottomRightCorner);
+
+            return (left || right || top || bottom);
+        }
+
+        function lineIntersection(p1, p2, p3, p4) {
+            // calculate the direction of the lines
+            let uA = ((p4.x-p3.x)*(p1.y-p3.y) - (p4.y-p3.y)*(p1.x-p3.x)) / ((p4.y-p3.y)*(p2.x-p1.x) - (p4.x-p3.x)*(p2.y-p1.y));
+            let uB = ((p2.x-p1.x)*(p1.y-p3.y) - (p2.y-p1.y)*(p1.x-p3.x)) / ((p4.y-p3.y)*(p2.x-p1.x) - (p4.x-p3.x)*(p2.y-p1.y));
+
+            // if uA and uB are between 0-1, then the lines are colliding
+            return (uA >= 0 && uA <=1 && uB >= 0 && uB <= 1);
+        }
+    }
+
 
     function processInput(elapsedTime) {
         myKeyboard.update(elapsedTime);
@@ -108,12 +143,18 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
 
     function update() {
         spaceShip.move();
+        checkCollision();
     }
 
     function render() {
         graphics.clear();
         renderer.Terrain.render(terrain);
         renderer.SpaceShip.render(spaceShip);
+        renderer.ShipInfo.render({
+            fuel: spaceShip.fuel,
+            verticalSpeed: spaceShip.verticalSpeed,
+            angle: spaceShip.angle
+        });
     }
 
     function gameLoop(time) {
