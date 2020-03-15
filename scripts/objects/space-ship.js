@@ -52,10 +52,16 @@ MyGame.objects.SpaceShip = function(spec) {
     }
     
     function move() {
-        spec.speed.y += spec.gravity;
+        if (spec.freeze) {
+            spec.speed.y = 0;
+            spec.speed.x = 0;
+        }
+        else {
+            spec.speed.y += spec.gravity;
 
-        spec.center.x += spec.speed.x;
-        spec.center.y += spec.speed.y;
+            spec.center.x += spec.speed.x;
+            spec.center.y += spec.speed.y;
+        }
     }
 
     function applyThrust(elapsedTime){
@@ -75,12 +81,17 @@ MyGame.objects.SpaceShip = function(spec) {
         spec.fuel -= elapsedTime/100;
     }
 
+    function toggleFreeze(isFrozen) {
+        spec.freeze = isFrozen;
+    }
+
 
     let api = {
         rotateLeft: rotateLeft,
         rotateRight: rotateRight,
         move: move,
         applyThrust: applyThrust,
+        toggleFreeze: toggleFreeze,
 
         get imageReady() { return imageReady; },
         get rotation() { return rotation; },

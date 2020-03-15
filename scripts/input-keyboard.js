@@ -26,6 +26,10 @@ MyGame.input.Keyboard = function () {
         that.handlers[key] = handler;
     };
 
+    that.deregister = function (key) {
+        delete that.handlers[key];
+    };
+
     window.addEventListener('keydown', keyPress);
     window.addEventListener('keyup', keyRelease);
 

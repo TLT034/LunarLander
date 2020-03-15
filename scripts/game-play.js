@@ -17,7 +17,21 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         thrustPower: .0025,
         thrustActive: false,
         fuel: 100,
+        freeze: false
     });
+
+
+    function shipControlsOff(){
+        myKeyboard.deregister(controls['Rotate Left']);
+        myKeyboard.deregister(controls['Rotate Right']);
+        myKeyboard.deregister(controls['Thrust']);
+    }
+
+    function shipControlsOn(){
+        myKeyboard.register(controls['Rotate Left'], spaceShip.rotateLeft);
+        myKeyboard.register(controls['Rotate Right'], spaceShip.rotateRight);
+        myKeyboard.register(controls['Thrust'], spaceShip.applyThrust);
+    }
 
     function generateTerrain(canvas) {
         // initialize path of terrain array with bottom left and right points for
@@ -37,10 +51,12 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         let landZoneA = {
             x: Math.floor(Math.random() * (landZoneStartMax - landZoneStartMin + 1)) + landZoneStartMin,
             y: Math.floor(Math.random() * (maxTerrainY - minTerrainY + 1)) + minTerrainY,
+            isLandZone: true
         };
         let landZoneB = {
             x: landZoneA.x + landZoneLength,
             y: landZoneA.y,
+            isLandZone: true
         };
         linePath.push(landZoneA, landZoneB);
 
@@ -48,10 +64,12 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         let pointA = {
             x: 0,
             y: Math.floor(Math.random() * (maxTerrainY - minTerrainY + 1)) + minTerrainY,
+            isLandZone: false
         };
         let pointB = {
             x: canvas.width,
             y: Math.floor(Math.random() * (maxTerrainY - minTerrainY + 1)) + minTerrainY,
+            isLandZone: false
         };
         linePath.push(pointA, pointB);
 
@@ -92,7 +110,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
                 if (newY < minTerrainY) {newY = minTerrainY;}
                 if (newY > maxTerrainY) {newY = maxTerrainY;}
 
-                let c = { x: (a.x + b.x)/2, y: newY };
+                let c = { x: (a.x + b.x)/2, y: newY, isLandZone: false };
 
                 linePath.push(c);
 
@@ -102,15 +120,50 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         }
     }
 
-    function checkCollision(){
-        let len = terrain.length -1;
-        for (let i = 0; i < len; i++) {
+    function checkCollision() {
+        let collisionPoints = [];
+        let safeLanding = true;
+
+        // check for collisions and add all collision terrain points to an array
+        for (let i = 0; i < terrain.length -1; i++) {
+            // if the next terrain point is to the right of the ship, then the rest of the points are also to the
+            // the right of the ship, and therefore will not have a chance for collision. To save on performance,
+            // we don't check these points, as there is no point.
+            if (terrain[i] > spaceShip.center + spaceShip.size.width/2) {
+                break;
+            }
             if (rectIntersection(terrain[i], terrain[i+1], spaceShip.center, spaceShip.size)) {
-                return true;
+                collisionPoints.push(terrain[i]);
+                collisionPoints.push(terrain[i+1]);
             }
         }
-        return false;
 
+        // if any collision terrain points aren't the landing zone, then mark the collision as a crash
+        for (let i = 0; i < collisionPoints.length; i++) {
+            if (!collisionPoints[i].isLandZone) {
+                safeLanding = false;
+                break;
+            }
+        }
+        // if the spaceship does not meet landing requirements, then mark the collision as a crash
+        if (spaceShip.verticalSpeed >= 2.1 || !(spaceShip.angle >= 355 || spaceShip.angle <= 5)) {
+            safeLanding = false;
+        }
+
+        // if there is a collision, freeze the ship, turn off controls, and run an end of game sequence
+        if (collisionPoints.length > 0) {
+            spaceShip.toggleFreeze(true);
+            shipControlsOff();
+            if (safeLanding) {
+                winSequence();
+            }
+            else {
+                gameOverSequence();
+            }
+        }
+
+
+        /** Helper functions for collision detection **/
         function rectIntersection(p1, p2, pos, size) {
             // pos: the center position of the ship
             let topLeftCorner = {x: pos.x - size.width/2, y: pos.y - size.height/2};
@@ -134,6 +187,16 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
             // if uA and uB are between 0-1, then the lines are colliding
             return (uA >= 0 && uA <=1 && uB >= 0 && uB <= 1);
         }
+    }
+
+    function gameOverSequence() {
+        console.log('Crashed!');
+        cancelNextRequest = true;
+    }
+
+    function winSequence() {
+        console.log('Landed Safe!');
+        cancelNextRequest = true;
     }
 
 
@@ -189,9 +252,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         lastTimeStamp = performance.now();
         cancelNextRequest = false;
         requestAnimationFrame(gameLoop);
-        myKeyboard.register(controls['Rotate Left'], spaceShip.rotateLeft);
-        myKeyboard.register(controls['Rotate Right'], spaceShip.rotateRight);
-        myKeyboard.register(controls['Thrust'], spaceShip.applyThrust);
+        shipControlsOn();
     }
 
     return {

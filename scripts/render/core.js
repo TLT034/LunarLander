@@ -28,9 +28,11 @@ MyGame.graphics = (function() {
             center.x - size.width / 2,
             center.y - size.height / 2,
             size.width, size.height);
-        context.strokeRect(center.x - size.width / 2,
-            center.y - size.height / 2,
-            size.width, size.height);
+
+        // uncomment to draw bounding box
+        // context.strokeRect(center.x - size.width / 2,
+        //     center.y - size.height / 2,
+        //     size.width, size.height);
 
         context.restore();
     }
