@@ -1,15 +1,18 @@
 MyGame.input.Keyboard = function () {
     let that = {
         keys: {},
-        handlers: {}
+        handlers: {},
+        toggleKeys : {},
+        toggleHandlers: {},
     };
 
-    function keyPress(e) {
+    function keyDown(e) {
         that.keys[e.key] = e.timeStamp;
     }
 
     function keyRelease(e) {
         delete that.keys[e.key];
+        that.toggleKeys[e.key] = e.key;
     }
 
     that.update = function (elapsedTime) {
@@ -20,6 +23,24 @@ MyGame.input.Keyboard = function () {
                 }
             }
         }
+        for (let key in that.toggleKeys) {
+            if (that.toggleKeys.hasOwnProperty(key)) {
+                if (that.toggleHandlers[key]) {
+                    that.toggleHandlers[key]();
+                }
+            }
+        }
+        that.toggleKeys = {};
+    };
+
+    that.registerToggle = function (key, handler) {
+        if (!(key in that.toggleKeys)){
+            that.toggleHandlers[key] = handler;
+        }
+    };
+
+    that.deregisterToggle = function (key) {
+        delete that.toggleHandlers[key];
     };
 
     that.register = function (key, handler) {
@@ -30,7 +51,7 @@ MyGame.input.Keyboard = function () {
         delete that.handlers[key];
     };
 
-    window.addEventListener('keydown', keyPress);
+    window.addEventListener('keydown', keyDown);
     window.addEventListener('keyup', keyRelease);
 
     return that;

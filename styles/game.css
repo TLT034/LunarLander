@@ -89,3 +89,16 @@ ul.menu li button:active {
     text-align: center;
     color: #f5eaea;
 }
+
+#game-play {
+    position: relative;
+}
+
+#canvas, #pause-menu, #game-over-menu {
+     position: absolute;
+ }
+
+#pause-menu, #game-over-menu {
+    margin-top: 10em;
+}
+

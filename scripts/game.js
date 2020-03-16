@@ -28,6 +28,16 @@ MyGame.game = (function(screens) {
         document.getElementById(id).classList.add('active');
     }
 
+    function toggleDialog(id) {
+        let active = document.getElementsByClassName('active');
+        if (id in active) {
+            active[id].classList.remove('active');
+        }
+        else {
+            document.getElementById(id).classList.add('active');
+        }
+    }
+
     //------------------------------------------------------------------
     //
     // This function performs the one-time game initialization.
@@ -50,6 +60,7 @@ MyGame.game = (function(screens) {
 
     return {
         initialize : initialize,
-        showScreen : showScreen
+        showScreen : showScreen,
+        toggleDialog : toggleDialog
     };
 }(MyGame.screens));

@@ -1,25 +1,35 @@
 MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input, controls) {
     'use strict';
 
-    let lastTimeStamp = performance.now();
-    let cancelNextRequest = true;
-
     let myKeyboard = input.Keyboard();
     let terrain = null;
-    let spaceShip = objects.SpaceShip({
-        imageSrc: 'assets/space-ship.png',
-        center: { x: graphics.canvas.width / 2, y: graphics.canvas.height / 4},
-        size: { width: 50, height: 75 },
-        speed: { rotation: .0015, x: 0, y: 0},
-        maxSpeed: {x: 2 },
-        minSpeed: {x: -2, y: -2},
-        gravity: .01,
-        thrustPower: .0025,
-        thrustActive: false,
-        fuel: 100,
-        freeze: false
-    });
+    let gamePaused = false;
 
+    let lastTimeStamp,
+        cancelNextRequest,
+        gameOver,
+        countdownTime,
+        spaceShip;
+
+    function resetValues() {
+        lastTimeStamp = performance.now();
+        cancelNextRequest = false;
+        gameOver = false;
+        countdownTime = 3000;
+        spaceShip = objects.SpaceShip({
+            imageSrc: 'assets/space-ship.png',
+            center: { x: graphics.canvas.width / 2, y: graphics.canvas.height / 5},
+            size: { width: 50, height: 75 },
+            speed: { rotation: .0015, x: 0, y: 0},
+            maxSpeed: {x: 2 },
+            minSpeed: {x: -2, y: -2},
+            gravity: .01,
+            thrustPower: .0025,
+            thrustActive: false,
+            fuel: 100,
+            freeze: true
+        });
+    }
 
     function shipControlsOff(){
         myKeyboard.deregister(controls['Rotate Left']);
@@ -33,7 +43,8 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         myKeyboard.register(controls['Thrust'], spaceShip.applyThrust);
     }
 
-    function generateTerrain(canvas) {
+    function generateTerrain() {
+        let canvas = graphics.canvas;
         // initialize path of terrain array with bottom left and right points for
         // connecting the terrain shape and filling the terrain color
         let linePath = [
@@ -189,9 +200,36 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         }
     }
 
+    function updateCountdown(elapsedTime) {
+        countdownTime -= elapsedTime;
+        if (countdownTime <= 0) {
+            shipControlsOn();
+            spaceShip.toggleFreeze(false);
+        }
+    }
+
+    function togglePauseGame() {
+        gamePaused = !gamePaused;
+        if (gamePaused) {
+            cancelNextRequest = true;
+            spaceShip.toggleFreeze(true);
+            shipControlsOff();
+        }
+        else {
+            cancelNextRequest = false;
+            lastTimeStamp = performance.now();
+            countdownTime = 3000;
+            requestAnimationFrame(gameLoop);
+        }
+        game.toggleDialog('pause-menu');
+    }
+
     function gameOverSequence() {
-        console.log('Crashed!');
+        myKeyboard.deregisterToggle('Escape');
+        gameOver = true;
         cancelNextRequest = true;
+        game.toggleDialog('game-over-menu');
+        console.log('Crashed!');
     }
 
     function winSequence() {
@@ -201,23 +239,37 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
 
 
     function processInput(elapsedTime) {
-        myKeyboard.update(elapsedTime);
+        if (!gamePaused && !gameOver) {
+            myKeyboard.update(elapsedTime);
+        }
     }
 
-    function update() {
-        spaceShip.move();
-        checkCollision();
+    function update(elapsedTime) {
+        if (countdownTime <= 0 && !gamePaused) {
+            spaceShip.move();
+            checkCollision();
+        }
+        else if (!gamePaused) {
+            updateCountdown(elapsedTime);
+        }
+
     }
 
     function render() {
         graphics.clear();
         renderer.Terrain.render(terrain);
         renderer.SpaceShip.render(spaceShip);
-        renderer.ShipInfo.render({
+        renderer.ScreenText.renderShipInfo({
             fuel: spaceShip.fuel,
             verticalSpeed: spaceShip.verticalSpeed,
             angle: spaceShip.angle
         });
+        if (countdownTime >= 0) {
+            renderer.ScreenText.renderCountdown(countdownTime);
+        }
+        if (gameOver) {
+            renderer.ScreenText.renderGameOver();
+        }
     }
 
     function gameLoop(time) {
@@ -225,7 +277,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         lastTimeStamp = time;
 
         processInput(elapsedTime);
-        update();
+        update(elapsedTime);
         render();
 
         if (!cancelNextRequest) {
@@ -234,30 +286,37 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
     }
 
     function initialize() {
+        myKeyboard.registerToggle('Escape', function(){togglePauseGame();});
 
-        myKeyboard.register('Escape', function() {
-            //
-            // Stop the game loop by canceling the request for the next animation frame
-            cancelNextRequest = true;
-            //
-            // Then, return to the main menu
-            game.showScreen('main-menu');
-        });
-
-        let canvas = document.getElementById('canvas');
-        terrain = generateTerrain(canvas);
+        terrain = generateTerrain();
     }
 
     function run() {
-        lastTimeStamp = performance.now();
-        cancelNextRequest = false;
-        requestAnimationFrame(gameLoop);
-        shipControlsOn();
+        resetValues();
+        if (gamePaused) {
+            togglePauseGame();
+        }
+        else {
+            requestAnimationFrame(gameLoop);
+        }
+    }
+
+    function reset() {
+        initialize();
+        resetValues();
+    }
+
+    function newGame() {
+        reset();
+        run();
     }
 
     return {
         initialize : initialize,
-        run : run
+        run : run,
+        togglePauseGame : togglePauseGame,
+        reset : reset,
+        newGame : newGame
     };
 
 }(MyGame.game, MyGame.objects, MyGame.render, MyGame.graphics, MyGame.input, MyGame.controls));

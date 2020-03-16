@@ -52,11 +52,7 @@ MyGame.objects.SpaceShip = function(spec) {
     }
     
     function move() {
-        if (spec.freeze) {
-            spec.speed.y = 0;
-            spec.speed.x = 0;
-        }
-        else {
+        if (!spec.freeze) {
             spec.speed.y += spec.gravity;
 
             spec.center.x += spec.speed.x;

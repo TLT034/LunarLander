@@ -82,13 +82,59 @@ MyGame.graphics = (function() {
 
     }
 
+    //------------------------------------------------------------------
+    //
+    // Returns the width of the specified text, in pixels.
+    //
+    //------------------------------------------------------------------
+    function measureTextWidth(spec) {
+        context.save();
+
+        context.font = spec.font;
+        context.fillStyle = spec.fill;
+        if (spec.hasOwnProperty('stroke')) {
+            context.strokeStyle = spec.stroke;
+        }
+        let width = context.measureText(spec.text).width;
+
+        context.restore();
+
+        return width;
+    }
+
+    //------------------------------------------------------------------
+    //
+    // Returns the height of the specified text, in pixels.
+    //
+    //------------------------------------------------------------------
+    function measureTextHeight(spec) {
+        let saveText = spec.text;
+
+        spec.text = 'm';	// Clever trick to get font height
+        context.save();
+
+        context.font = spec.font;
+        context.fillStyle = spec.fill;
+        if (spec.hasOwnProperty('stroke')) {
+            context.strokeStyle = spec.stroke;
+        }
+        let height = context.measureText(spec.text).width;
+        spec.text = saveText;
+
+        context.restore();
+
+        return height;
+    }
+
 
     let api = {
         get canvas() { return canvas; },
         clear: clear,
         drawTexture: drawTexture,
         drawShape: drawShape,
-        drawText: drawText
+        drawText: drawText,
+        measureTextWidth: measureTextWidth,
+        measureTextHeight: measureTextHeight
     };
 
     return api;

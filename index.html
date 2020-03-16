@@ -19,6 +19,19 @@
     </div>
     <div id = "game-play" class = "screen">
         <canvas id = "canvas" width = "1250" height = "1000"></canvas>
+        <div id="pause-menu" class = "screen">
+            <ul class = "menu" >
+                <li><button id = "pause-continue-button">Continue</button></li>
+                <li><button id = "pause-restart-button">Restart</button></li>
+                <li><button id = "pause-main-menu-button">Main Menu</button></li>
+            </ul>
+        </div>
+        <div id="game-over-menu" class = "screen">
+            <ul class = "menu" >
+                <li><button id = "game-over-restart-button">Restart</button></li>
+                <li><button id = "game-over-main-menu-button">Main Menu</button></li>
+            </ul>
+        </div>
     </div>
     <div id = "high-scores" class = "screen">
         <h1>High Scores</h1>
@@ -64,7 +77,7 @@
 <script src = "scripts/render/core.js"></script>
 <script src = "scripts/render/terrain.js"></script>
 <script src = "scripts/render/space-ship.js"></script>
-<script src = "scripts/render/ship-info.js"></script>
+<script src = "scripts/render/screen-text.js"></script>
 
 <script src = "scripts/game.js"></script>
 <script src = "scripts/input-keyboard.js"></script>
@@ -74,3 +87,6 @@
 <script src = "scripts/game-play.js"></script>
 <script src = "scripts/highscores.js"></script>
 <script src = "scripts/credits.js"></script>
+
+<script src = "scripts/pause-dialog.js"></script>
+<script src = "scripts/game-over-dialog.js"></script>
