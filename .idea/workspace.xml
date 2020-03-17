@@ -5,11 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/game-play.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/game-play.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/game.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/input-keyboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/input-keyboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/objects/space-ship.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/objects/space-ship.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/render/core.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/render/core.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/render/ship-info.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/render/screen-text.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/render/screen-text.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/styles/game.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/game.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -87,7 +83,8 @@
       <workItem from="1584216639407" duration="12431000" />
       <workItem from="1584299175257" duration="4720000" />
       <workItem from="1584334386615" duration="8284000" />
-      <workItem from="1584381200038" duration="12496000" />
+      <workItem from="1584381200038" duration="12642000" />
+      <workItem from="1584402131088" duration="11874000" />
     </task>
     <servers />
   </component>

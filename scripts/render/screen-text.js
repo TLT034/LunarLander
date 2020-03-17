@@ -31,7 +31,7 @@ MyGame.render.ScreenText = (function(graphics) {
         graphics.drawText(spec.text, position, spec.font);
     }
 
-    function renderGameOver() {
+    function renderGameOver(score) {
         let spec = {
             font: '128px Orbitron',
             fill: '#f5eaea',
@@ -41,23 +41,66 @@ MyGame.render.ScreenText = (function(graphics) {
         let textHeight = graphics.measureTextHeight(spec);
         let position = {x: graphics.canvas.width/2 - textWidth/2, y: graphics.canvas.height/2 - textHeight};
         graphics.drawText(spec.text, position, spec.font);
-        //
-        // spec.font = '36px Orbitron';
-        // spec.text = 'Press ESC to go to main menu';
-        // textWidth = graphics.measureTextWidth(spec);
-        // textHeight = graphics.measureTextHeight(spec);
-        // position = {x: graphics.canvas.width/2 - textWidth/2, y: graphics.canvas.height/2 - (textHeight + 30) };
-        // graphics.drawText(spec.text, position, spec.font);
-        //
-        // spec.text = 'Press P to play again';
-        // textWidth = graphics.measureTextWidth(spec);
-        // position = {x: graphics.canvas.width/2 - textWidth/2, y: graphics.canvas.height/2 - (textHeight - 10) };
-        // graphics.drawText(spec.text, position, spec.font);
+
+        spec.font = '70px Orbitron';
+        spec.text = `Score: ${score}`;
+        textWidth = graphics.measureTextWidth(spec);
+        position = {x: graphics.canvas.width/2 - textWidth/2, y: graphics.canvas.height/2 - 25};
+        graphics.drawText(spec.text, position, spec.font);
+    }
+
+    function renderSafeLanding() {
+        let spec = {
+            font: '65px Orbitron',
+            fill: '#f5eaea',
+            text: "That's one small step for a man..."
+        };
+        let textWidth = graphics.measureTextWidth(spec);
+        let textHeight = graphics.measureTextHeight(spec);
+        let position = {x: graphics.canvas.width/2 - textWidth/2, y: graphics.canvas.height/2 - textHeight};
+        graphics.drawText(spec.text, position, spec.font);
+    }
+
+    function renderWin(score) {
+        let spec = {
+            font: '65px Orbitron',
+            fill: '#f5eaea',
+            text: "...one giant leap for mankind."
+        };
+        let textWidth = graphics.measureTextWidth(spec);
+        let textHeight = graphics.measureTextHeight(spec);
+        let position = {x: graphics.canvas.width/2 - textWidth/2, y: graphics.canvas.height/2 - textHeight};
+        graphics.drawText(spec.text, position, spec.font);
+
+        spec = {
+            font: '100px Orbitron',
+            fill: '#f5eaea',
+            text: `Score: ${score}`
+        };
+        textWidth = graphics.measureTextWidth(spec);
+        textHeight = graphics.measureTextHeight(spec);
+        position = {x: graphics.canvas.width/2 - textWidth/2, y: graphics.canvas.height/2 - textHeight - 125};
+        graphics.drawText(spec.text, position, spec.font);
+    }
+
+    function renderNextLevel() {
+        let spec = {
+            font: '128px Orbitron',
+            fill: '#f5eaea',
+            text: "Level 2!"
+        };
+        let textWidth = graphics.measureTextWidth(spec);
+        let textHeight = graphics.measureTextHeight(spec);
+        let position = {x: graphics.canvas.width/2 - textWidth/2, y: graphics.canvas.height/2 - textHeight};
+        graphics.drawText(spec.text, position, spec.font);
     }
 
     return {
         renderShipInfo: renderShipInfo,
         renderCountdown: renderCountdown,
-        renderGameOver: renderGameOver
+        renderGameOver: renderGameOver,
+        renderSafeLanding: renderSafeLanding,
+        renderNextLevel: renderNextLevel,
+        renderWin: renderWin
     };
 }(MyGame.graphics));

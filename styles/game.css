@@ -86,8 +86,13 @@ ul.menu li button:active {
 }
 
 #credits p {
+    margin-top: -1em;
     text-align: center;
     color: #f5eaea;
+}
+#controls p {
+    margin-top: -2.5em;
+    text-align: center;
 }
 
 #game-play {
@@ -98,7 +103,11 @@ ul.menu li button:active {
      position: absolute;
  }
 
-#pause-menu, #game-over-menu {
-    margin-top: 10em;
+#pause-menu {
+    margin-top: 5em;
 }
+#game-over-menu {
+    margin-top: 12em;
+}
+
 

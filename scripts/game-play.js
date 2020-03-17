@@ -4,17 +4,24 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
     let myKeyboard = input.Keyboard();
     let terrain = null;
     let gamePaused = false;
+    let showNextLevelText = false;
+    let showLandText = false;
+    let level = 1;
 
     let lastTimeStamp,
         cancelNextRequest,
         gameOver,
+        gameWon,
         countdownTime,
-        spaceShip;
+        spaceShip,
+        score;
 
-    function resetValues() {
+    function resetValues(levelToLoad = 1, lvlOneScore = 0) {
         lastTimeStamp = performance.now();
+        level = levelToLoad;
         cancelNextRequest = false;
         gameOver = false;
+        gameWon = false;
         countdownTime = 3000;
         spaceShip = objects.SpaceShip({
             imageSrc: 'assets/space-ship.png',
@@ -29,6 +36,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
             fuel: 100,
             freeze: true
         });
+        score = lvlOneScore;
     }
 
     function shipControlsOff(){
@@ -43,59 +51,67 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         myKeyboard.register(controls['Thrust'], spaceShip.applyThrust);
     }
 
-    function generateTerrain() {
+    function generateTerrain(level) {
         let canvas = graphics.canvas;
+        let terrainIterations = 40;
+        let minTerrainY = canvas.height * .6;
+        let maxTerrainY = canvas.height - 15;
+
         // initialize path of terrain array with bottom left and right points for
         // connecting the terrain shape and filling the terrain color
         let linePath = [
             {x: -5, y: canvas.height + 5},
             {x: canvas.width + 5, y: canvas.height + 5}
         ];
-        let landZoneLength = 150;  //TODO: change this based on level 1 or level 2
-        let terrainIterations = 100;
-        let landZoneStartMax = (canvas.width * .85) - landZoneLength;
-        let landZoneStartMin = canvas.width * .15;
-        let minTerrainY = canvas.height * .6;
-        let maxTerrainY = canvas.height - 15;
 
-        // landing zone start and end points
-        let landZoneA = {
-            x: Math.floor(Math.random() * (landZoneStartMax - landZoneStartMin + 1)) + landZoneStartMin,
-            y: Math.floor(Math.random() * (maxTerrainY - minTerrainY + 1)) + minTerrainY,
-            isLandZone: true
-        };
-        let landZoneB = {
-            x: landZoneA.x + landZoneLength,
-            y: landZoneA.y,
-            isLandZone: true
-        };
-        linePath.push(landZoneA, landZoneB);
+        if (level === 1) {
+            generateLandZone(150, canvas.width * .15, canvas.width/2 - 160, 0, canvas.width/2);
+            generateLandZone(150, canvas.width/2, canvas.width * .85 - 150, canvas.width/2, canvas.width);
+        }
+        else if (level === 2) {
+            terrainIterations = 100;
+            generateLandZone(100, canvas.width * .15, canvas.width * .85 - 100, 0, canvas.width);
+        }
 
-        // terrain start and end points
-        let pointA = {
-            x: 0,
-            y: Math.floor(Math.random() * (maxTerrainY - minTerrainY + 1)) + minTerrainY,
-            isLandZone: false
-        };
-        let pointB = {
-            x: canvas.width,
-            y: Math.floor(Math.random() * (maxTerrainY - minTerrainY + 1)) + minTerrainY,
-            isLandZone: false
-        };
-        linePath.push(pointA, pointB);
+        function generateLandZone(lengthLZ, minLZ, maxLZ, startX, endX) {
+            // landing zone start and end points
+            let landZoneA = {
+                x: Math.floor(Math.random() * (maxLZ - minLZ + 1)) + minLZ,
+                y: Math.floor(Math.random() * (maxTerrainY - minTerrainY + 1)) + minTerrainY,
+                isLandZone: true
+            };
+            let landZoneB = {
+                x: landZoneA.x + lengthLZ,
+                y: landZoneA.y,
+                isLandZone: true
+            };
+            linePath.push(landZoneA, landZoneB);
 
-        // ratio for how many iterations on each side of the land zone based on the land zone position
-        let landZonePositionX = (landZoneA.x + landZoneB.x) / 2;
-        let leftTerrainRatio = landZonePositionX / canvas.width;
-        let rightTerrainRatio = 1 - leftTerrainRatio;
-        let leftTerrainIterations = terrainIterations * leftTerrainRatio;
-        let rightTerrainIterations = terrainIterations * rightTerrainRatio;
+            // terrain start and end points
+            let pointA = {
+                x: startX,
+                y: Math.floor(Math.random() * (maxTerrainY - minTerrainY + 1)) + minTerrainY,
+                isLandZone: false
+            };
+            let pointB = {
+                x: endX,
+                y: Math.floor(Math.random() * (maxTerrainY - minTerrainY + 1)) + minTerrainY,
+                isLandZone: false
+            };
+            linePath.push(pointA, pointB);
 
+            // ratio for how many iterations on each side of the land zone based on the land zone position
+            let landZonePositionX = (landZoneA.x + landZoneB.x) / 2;
+            let leftTerrainRatio = landZonePositionX / endX;
+            let rightTerrainRatio = 1 - leftTerrainRatio;
+            let leftTerrainIterations = terrainIterations * leftTerrainRatio;
+            let rightTerrainIterations = terrainIterations * rightTerrainRatio;
 
-        // Create new terrain points between start point and start of land zone
-        getNewPoints(pointA, landZoneA, leftTerrainIterations);
-        // Create new terrain points between end of land zone and end point
-        getNewPoints(landZoneB, pointB, rightTerrainIterations);
+            // Create new terrain points between start point and start of land zone
+            getNewPoints(pointA, landZoneA, leftTerrainIterations);
+            // Create new terrain points between end of land zone and end point
+            getNewPoints(landZoneB, pointB, rightTerrainIterations);
+        }
 
         // sort points in linePath array based on their x value
         linePath.sort((a,b) => (a.x < b.x) ? -1 : 1);
@@ -202,7 +218,15 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
 
     function updateCountdown(elapsedTime) {
         countdownTime -= elapsedTime;
-        if (countdownTime <= 0) {
+        if (countdownTime <= 5500 && showLandText){
+            showLandText = false;
+            showNextLevelText = true;
+        }
+        else if (countdownTime <= 3500 && showNextLevelText){
+            showNextLevelText = false;
+            reset(2, spaceShip.fuel);
+        }
+        else if (countdownTime <= 0) {
             shipControlsOn();
             spaceShip.toggleFreeze(false);
         }
@@ -225,16 +249,27 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
     }
 
     function gameOverSequence() {
+        score = Math.round(score);
         myKeyboard.deregisterToggle('Escape');
         gameOver = true;
         cancelNextRequest = true;
+        // TODO: highscores.updateMostRecentScore(score);
         game.toggleDialog('game-over-menu');
-        console.log('Crashed!');
     }
 
     function winSequence() {
-        console.log('Landed Safe!');
-        cancelNextRequest = true;
+        // if going from level one to two, else end of level two / the game.
+        if (level === 1) {
+            showLandText = true;
+            countdownTime = 8000;
+        }
+        else {
+            gameWon = true;
+            cancelNextRequest = true;
+            score = Math.round(score + spaceShip.fuel);
+            // TODO: highscores.updateMostRecentScore(score);
+            game.toggleDialog('game-over-menu');
+        }
     }
 
 
@@ -245,11 +280,11 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
     }
 
     function update(elapsedTime) {
-        if (countdownTime <= 0 && !gamePaused) {
+        if (countdownTime <= 0 && !gamePaused && !gameWon) {
             spaceShip.move();
             checkCollision();
         }
-        else if (!gamePaused) {
+        else if (countdownTime >= 0 && !gamePaused) {
             updateCountdown(elapsedTime);
         }
 
@@ -264,11 +299,20 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
             verticalSpeed: spaceShip.verticalSpeed,
             angle: spaceShip.angle
         });
-        if (countdownTime >= 0) {
+        if (countdownTime <= 3499 && countdownTime >= 0 && !gameWon) {
             renderer.ScreenText.renderCountdown(countdownTime);
         }
         if (gameOver) {
-            renderer.ScreenText.renderGameOver();
+            renderer.ScreenText.renderGameOver(score);
+        }
+        if (showLandText && level === 1) {
+            renderer.ScreenText.renderSafeLanding();
+        }
+        else if (gameWon) {
+            renderer.ScreenText.renderWin(score);
+        }
+        else if (showNextLevelText) {
+            renderer.ScreenText.renderNextLevel();
         }
     }
 
@@ -288,7 +332,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
     function initialize() {
         myKeyboard.registerToggle('Escape', function(){togglePauseGame();});
 
-        terrain = generateTerrain();
+        terrain = generateTerrain(level);
     }
 
     function run() {
@@ -301,9 +345,9 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         }
     }
 
-    function reset() {
+    function reset(levelToLoad = 1, lvlOneScore = 0) {
+        resetValues(levelToLoad, lvlOneScore);
         initialize();
-        resetValues();
     }
 
     function newGame() {
