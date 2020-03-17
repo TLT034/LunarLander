@@ -224,7 +224,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         }
         else if (countdownTime <= 3500 && showNextLevelText){
             showNextLevelText = false;
-            reset(2, spaceShip.fuel);
+            reset(2, spaceShip.fuel * (3 - spaceShip.verticalSpeed));
         }
         else if (countdownTime <= 0) {
             shipControlsOn();
@@ -266,7 +266,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         else {
             gameWon = true;
             cancelNextRequest = true;
-            score = Math.round(score + spaceShip.fuel);
+            score = Math.round(score + (spaceShip.fuel * (3 - spaceShip.verticalSpeed)));
             screens['high-scores'].updateMostRecentScore(score);
             game.toggleDialog('game-over-menu');
         }
