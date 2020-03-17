@@ -51,7 +51,6 @@ MyGame.game = (function(screens) {
                 screens[screen].initialize();
             }
         }
-
         //
         // Make the main-menu screen the active one
         showScreen('main-menu');

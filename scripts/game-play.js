@@ -1,4 +1,4 @@
-MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input, controls) {
+MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input, controls, screens) {
     'use strict';
 
     let myKeyboard = input.Keyboard();
@@ -253,7 +253,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         myKeyboard.deregisterToggle('Escape');
         gameOver = true;
         cancelNextRequest = true;
-        // TODO: highscores.updateMostRecentScore(score);
+        screens['high-scores'].updateMostRecentScore(score);
         game.toggleDialog('game-over-menu');
     }
 
@@ -267,7 +267,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
             gameWon = true;
             cancelNextRequest = true;
             score = Math.round(score + spaceShip.fuel);
-            // TODO: highscores.updateMostRecentScore(score);
+            screens['high-scores'].updateMostRecentScore(score);
             game.toggleDialog('game-over-menu');
         }
     }
@@ -329,6 +329,16 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         }
     }
 
+    function reset(levelToLoad = 1, lvlOneScore = 0) {
+        resetValues(levelToLoad, lvlOneScore);
+        initialize();
+    }
+
+    function newGame() {
+        reset();
+        run();
+    }
+
     function initialize() {
         myKeyboard.registerToggle('Escape', function(){togglePauseGame();});
 
@@ -345,15 +355,6 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         }
     }
 
-    function reset(levelToLoad = 1, lvlOneScore = 0) {
-        resetValues(levelToLoad, lvlOneScore);
-        initialize();
-    }
-
-    function newGame() {
-        reset();
-        run();
-    }
 
     return {
         initialize : initialize,
@@ -363,4 +364,4 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         newGame : newGame
     };
 
-}(MyGame.game, MyGame.objects, MyGame.render, MyGame.graphics, MyGame.input, MyGame.controls));
+}(MyGame.game, MyGame.objects, MyGame.render, MyGame.graphics, MyGame.input, MyGame.controls, MyGame.screens));
