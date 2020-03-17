@@ -11,7 +11,6 @@ MyGame.screens['high-scores'] = (function(game) {
     function checkForHighScore(){
         let highScores = [];
         let previousScores = JSON.parse(localStorage.getItem('highScores'));
-        console.log(previousScores);
 
         if (previousScores !== null) {
             if (Array.isArray(previousScores)){

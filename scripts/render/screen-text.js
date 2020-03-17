@@ -10,13 +10,25 @@ MyGame.render.ScreenText = (function(graphics) {
     // --------------------------------------------------------------
     function renderShipInfo(spec) {
         let fuelText = `Fuel: ${spec.fuel.toFixed(1)}`;
-        graphics.drawText(fuelText, {x: 10, y: 40}, '30px Orbitron');
+        let color = '#f5eaea';
+        if (spec.fuel <= 0) {
+            color = 'red';
+        }
+        graphics.drawText(fuelText, {x: 10, y: 40}, '30px Orbitron', color);
 
         let speedText = `Vertical Speed: ${spec.verticalSpeed.toFixed(1)}`;
-        graphics.drawText(speedText, {x: 10, y: 90}, '30px Orbitron');
+        color = '#f5eaea';
+        if (spec.verticalSpeed >= 2) {
+            color = 'red';
+        }
+        graphics.drawText(speedText, {x: 10, y: 90}, '30px Orbitron', color);
 
         let angleText = `Angle: ${spec.angle.toFixed(1)}`;
-        graphics.drawText(angleText, {x: 10, y: 140}, '30px Orbitron');
+        color = '#f5eaea';
+        if (spec.angle > 5 && spec.angle < 355) {
+            color = 'red';
+        }
+        graphics.drawText(angleText, {x: 10, y: 140}, '30px Orbitron', color);
     }
 
     function renderCountdown(time) {

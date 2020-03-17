@@ -173,7 +173,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
             }
         }
         // if the spaceship does not meet landing requirements, then mark the collision as a crash
-        if (spaceShip.verticalSpeed >= 2.1 || !(spaceShip.angle >= 355 || spaceShip.angle <= 5)) {
+        if (spaceShip.verticalSpeed >= 2 || !(spaceShip.angle >= 355 || spaceShip.angle <= 5)) {
             safeLanding = false;
         }
 
@@ -188,7 +188,6 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
                 gameOverSequence();
             }
         }
-
 
         /** Helper functions for collision detection **/
         function rectIntersection(p1, p2, pos, size) {
@@ -266,7 +265,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         else {
             gameWon = true;
             cancelNextRequest = true;
-            score = Math.round(score + (spaceShip.fuel * (3 - spaceShip.verticalSpeed)));
+            score = Math.round(score + (spaceShip.fuel * (4 - spaceShip.verticalSpeed)));
             screens['high-scores'].updateMostRecentScore(score);
             game.toggleDialog('game-over-menu');
         }
