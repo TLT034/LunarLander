@@ -3,13 +3,13 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
 
     let myKeyboard = input.Keyboard();
     let terrain = null;
-    let gamePaused = false;
     let showNextLevelText = false;
     let showLandText = false;
     let level = 1;
 
     let lastTimeStamp,
         cancelNextRequest,
+        gamePaused,
         gameOver,
         gameWon,
         countdownTime,
@@ -20,6 +20,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         lastTimeStamp = performance.now();
         level = levelToLoad;
         cancelNextRequest = false;
+        gamePaused = false;
         gameOver = false;
         gameWon = false;
         countdownTime = 3000;
@@ -232,26 +233,24 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
     }
 
     function togglePauseGame() {
-        gamePaused = !gamePaused;
-        if (gamePaused) {
-            cancelNextRequest = true;
-            spaceShip.toggleFreeze(true);
-            shipControlsOff();
+        if (!gameOver) {
+            gamePaused = !gamePaused;
+            if (gamePaused) {
+                spaceShip.toggleFreeze(true);
+                shipControlsOff();
+            }
+            else {
+                lastTimeStamp = performance.now();
+                countdownTime = 3000;
+            }
+            game.toggleDialog('pause-menu');
         }
-        else {
-            cancelNextRequest = false;
-            lastTimeStamp = performance.now();
-            countdownTime = 3000;
-            requestAnimationFrame(gameLoop);
-        }
-        game.toggleDialog('pause-menu');
     }
 
     function gameOverSequence() {
-        score = Math.round(score);
-        myKeyboard.deregisterToggle('Escape');
-        gameOver = true;
         cancelNextRequest = true;
+        score = Math.round(score);
+        gameOver = true;
         screens['high-scores'].updateMostRecentScore(score);
         game.toggleDialog('game-over-menu');
     }
@@ -286,7 +285,6 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         else if (countdownTime >= 0 && !gamePaused) {
             updateCountdown(elapsedTime);
         }
-
     }
 
     function render() {
@@ -333,25 +331,20 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         initialize();
     }
 
-    function newGame() {
-        reset();
-        run();
-    }
-
     function initialize() {
-        myKeyboard.registerToggle('Escape', function(){togglePauseGame();});
-
         terrain = generateTerrain(level);
     }
 
     function run() {
         resetValues();
-        if (gamePaused) {
-            togglePauseGame();
-        }
-        else {
-            requestAnimationFrame(gameLoop);
-        }
+        myKeyboard.registerToggle('Escape', function(){togglePauseGame();});
+        console.log(myKeyboard.toggleHandlers);
+        requestAnimationFrame(gameLoop);
+    }
+
+    function stopGame() {
+        cancelNextRequest = true;
+        myKeyboard.deregisterToggle('Escape');
     }
 
 
@@ -360,7 +353,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         run : run,
         togglePauseGame : togglePauseGame,
         reset : reset,
-        newGame : newGame
+        stopGame : stopGame
     };
 
 }(MyGame.game, MyGame.objects, MyGame.render, MyGame.graphics, MyGame.input, MyGame.controls, MyGame.screens));

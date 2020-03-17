@@ -10,24 +10,25 @@
 <div id = "game">
     <div id = "main-menu" class = "screen">
         <h1>Lunar Lander</h1>
-        <ul class = "menu">
+        <ul id="main-menu-buttons" class = "menu">
             <li><button id = "new-game-button">New&nbsp;Game</button></li>
             <li><button id = "high-scores-button">High&nbsp;Scores</button></li>
             <li><button id = "controls-button">Controls</button></li>
             <li><button id = "credits-button">Credits</button></li>
+            <li><button id = "sound-button">Enable Sound</button></li>
         </ul>
     </div>
     <div id = "game-play" class = "screen">
         <canvas id = "canvas" width = "1250" height = "1000"></canvas>
         <div id="pause-menu" class = "screen">
-            <ul class = "menu" >
+            <ul id="pause-menu-buttons" class = "menu" >
                 <li><button id = "pause-continue-button">Continue</button></li>
                 <li><button id = "pause-restart-button">Restart</button></li>
                 <li><button id = "pause-main-menu-button">Main Menu</button></li>
             </ul>
         </div>
         <div id="game-over-menu" class = "screen">
-            <ul class = "menu" >
+            <ul id="game-over-menu-buttons" class = "menu" >
                 <li><button id = "game-over-restart-button">Restart</button></li>
                 <li><button id = "game-over-main-menu-button">Main Menu</button></li>
             </ul>
@@ -43,7 +44,7 @@
     <div id = "controls" class = "screen">
         <h1>Controls</h1>
         <p>Click on any control to change its key binding</p>
-        <ul class = "menu">
+        <ul id="controls-buttons" class = "menu">
             <li><button id = "thrust-map-button">Thrust: </button></li>
             <li><button id = "left-map-button">Rotate Left: </button></li>
             <li><button id = "right-map-button">Rotate Right: </button></li>
@@ -69,11 +70,13 @@
         input: {},
         objects: {},
         render: [],
-        controls: {}
+        controls: {},
+        soundEnabled: false
     };
 </script>
 
 <script src = "scripts/objects/space-ship.js"></script>
+<script src = "scripts/objects/sound.js"></script>
 
 <script src = "scripts/render/core.js"></script>
 <script src = "scripts/render/terrain.js"></script>

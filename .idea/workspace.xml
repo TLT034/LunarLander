@@ -3,9 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="5b0b2b8a-111c-440f-aaca-308afa856e4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/controls.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/controls.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/game-over-dialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/game-over-dialog.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/game-play.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/game-play.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/highscores.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/highscores.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/render/screen-text.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/render/screen-text.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/game.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/game.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/input-keyboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/input-keyboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/main-menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/main-menu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/pause-dialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/pause-dialog.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,10 +42,14 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js.buildTools.grunt.grunt-cli.package" value="" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/GameState" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../cs5410-thomas-tristan-assn2" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Tristan\repos\school\cs5410\cs5410-thomas-tristan-assn3\scripts\objects" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Tristan\repos\school\cs5410\cs5410-thomas-tristan-assn3\assets" />
       <recent name="C:\Users\Tristan\repos\school\cs5410\cs5410-thomas-tristan-assn3\scripts" />
     </key>
   </component>
@@ -84,7 +93,7 @@
       <workItem from="1584334386615" duration="8284000" />
       <workItem from="1584381200038" duration="12642000" />
       <workItem from="1584402131088" duration="12032000" />
-      <workItem from="1584467444124" duration="7529000" />
+      <workItem from="1584467444124" duration="19147000" />
     </task>
     <servers />
   </component>
@@ -96,13 +105,13 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="94" y="356" key="#com.intellij.execution.impl.EditConfigurationsDialog/-3840.-514.2560.1413/0.0.2560.1400@0.0.2560.1400" timestamp="1583809883716" />
-    <state x="399" y="503" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1583719272475">
+    <state x="399" y="503" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1584476909302">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="399" y="503" key="#com.intellij.fileTypes.FileTypeChooser/-3840.-514.2560.1413/0.0.2560.1400@0.0.2560.1400" timestamp="1583719272475" />
-    <state x="1060" y="476" key="FileChooserDialogImpl" timestamp="1584467568007">
+    <state x="399" y="503" key="#com.intellij.fileTypes.FileTypeChooser/-3840.-514.2560.1413/0.0.2560.1400@0.0.2560.1400" timestamp="1584476909302" />
+    <state x="1060" y="476" key="FileChooserDialogImpl" timestamp="1584482672135">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="1060" y="476" key="FileChooserDialogImpl/-3840.-514.2560.1413/0.0.2560.1400@0.0.2560.1400" timestamp="1584467568007" />
+    <state x="1060" y="476" key="FileChooserDialogImpl/-3840.-514.2560.1413/0.0.2560.1400@0.0.2560.1400" timestamp="1584482672135" />
   </component>
 </project>

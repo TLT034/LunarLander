@@ -1,12 +1,16 @@
-MyGame.screens['main-menu'] = (function(game) {
+MyGame.screens['main-menu'] = (function(game, objects) {
     'use strict';
+
+    let menuMusic;
 
     function initialize() {
         //
         // Setup each of menu events for the screens
         document.getElementById('new-game-button').addEventListener(
             'click',
-            function() {game.showScreen('game-play'); });
+            function() {
+                menuMusic.stopSound();
+                game.showScreen('game-play');});
 
         document.getElementById('high-scores-button').addEventListener(
             'click',
@@ -19,15 +23,30 @@ MyGame.screens['main-menu'] = (function(game) {
         document.getElementById('credits-button').addEventListener(
             'click',
             function() { game.showScreen('credits'); });
+
+        document.getElementById('sound-button').addEventListener(
+            'click',
+            function() {
+                if (MyGame.soundEnabled) {
+                    menuMusic.stopSound();
+                    MyGame.soundEnabled = false;
+                    document.getElementById('sound-button').innerText = 'Enable Sound';
+                }
+                else {
+                    MyGame.soundEnabled = true;
+                    menuMusic.playSound();
+                    document.getElementById('sound-button').innerText = 'Disable Sound';
+                }});
+
+        menuMusic = objects.Sound({src: 'assets/menu-music.mp3', volume: .25, loop: true});
     }
 
     function run() {
-        //
-        // I know this is empty, there isn't anything to do.
+        menuMusic.playSound();
     }
 
     return {
         initialize : initialize,
         run : run
     };
-}(MyGame.game));
+}(MyGame.game, MyGame.objects, MyGame.soundEnabled));

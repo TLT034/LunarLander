@@ -5,7 +5,7 @@
 //
 // ------------------------------------------------------------------
 
-MyGame.game = (function(screens) {
+MyGame.game = (function(screens, objects) {
     'use strict';
 
     //------------------------------------------------------------------
@@ -51,6 +51,17 @@ MyGame.game = (function(screens) {
                 screens[screen].initialize();
             }
         }
+
+        //
+        // add sound effects to all buttons
+        let hoverSound = objects.Sound({src: 'assets/menu-hover.mp3', volume: 1, loop: false});
+        let clickSound = objects.Sound({src: 'assets/menu-click.mp3', volume: 1, loop: false});
+        let menuButtons = document.getElementsByTagName('button');
+        for (let i = 0; i < menuButtons.length; i++) {
+            menuButtons[i].addEventListener('mouseenter', function(){hoverSound.playSound();});
+            menuButtons[i].addEventListener('click', function(){clickSound.playSound();});
+        }
+
         //
         // Make the main-menu screen the active one
         showScreen('main-menu');
@@ -62,4 +73,4 @@ MyGame.game = (function(screens) {
         showScreen : showScreen,
         toggleDialog : toggleDialog
     };
-}(MyGame.screens));
+}(MyGame.screens, MyGame.objects));

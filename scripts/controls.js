@@ -51,7 +51,6 @@ MyGame.screens['controls'] = (function(game, controls) {
         }
 
         function addKey(event) {
-            console.log(`event: ${event}`);
             controls[control] = event.key;
             waitingForInput = false;
         }

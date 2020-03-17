@@ -13,6 +13,10 @@ MyGame.input.Keyboard = function () {
     function keyRelease(e) {
         delete that.keys[e.key];
         that.toggleKeys[e.key] = e.key;
+
+        if (that.toggleHandlers[e.key]) {
+            that.toggleHandlers[e.key]();
+        }
     }
 
     that.update = function (elapsedTime) {
@@ -23,20 +27,10 @@ MyGame.input.Keyboard = function () {
                 }
             }
         }
-        for (let key in that.toggleKeys) {
-            if (that.toggleKeys.hasOwnProperty(key)) {
-                if (that.toggleHandlers[key]) {
-                    that.toggleHandlers[key]();
-                }
-            }
-        }
-        that.toggleKeys = {};
     };
 
     that.registerToggle = function (key, handler) {
-        if (!(key in that.toggleKeys)){
-            that.toggleHandlers[key] = handler;
-        }
+        that.toggleHandlers[key] = handler;
     };
 
     that.deregisterToggle = function (key) {

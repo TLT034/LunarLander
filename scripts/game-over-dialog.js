@@ -6,16 +6,18 @@ MyGame.screens['game-over-dialog'] = (function(game, screens) {
         document.getElementById('game-over-restart-button').addEventListener(
             'click',
             function() {
-                screens['game-play'].newGame();
-                game.toggleDialog('game-over-menu');
+                screens['game-play'].reset(); // reset game and generate new terrain
+                screens['game-play'].run(); // start the game again
+                game.toggleDialog('game-over-menu'); // hide game over menu
             });
 
         document.getElementById('game-over-main-menu-button').addEventListener(
             'click',
             function() {
-                screens['game-play'].reset();
-                game.toggleDialog('game-over-menu');
-                game.showScreen('main-menu')
+                screens['game-play'].reset(); // reset game and generate new terrain
+                screens['game-play'].stopGame(); // stop game from running
+                game.toggleDialog('game-over-menu'); // hide game over menu
+                game.showScreen('main-menu') // go to main menu
             });
     }
 

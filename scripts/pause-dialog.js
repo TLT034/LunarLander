@@ -9,15 +9,17 @@ MyGame.screens['pause-dialog'] = (function(game, screens) {
         document.getElementById('pause-restart-button').addEventListener(
             'click',
             function() {
-                screens['game-play'].reset();
-                screens['game-play'].togglePauseGame();
+                screens['game-play'].reset(); // reset game and generate new terrain
+                game.toggleDialog('pause-menu'); // hide pause menu
             });
 
         document.getElementById('pause-main-menu-button').addEventListener(
             'click',
             function() {
-                screens['game-play'].reset();
-                game.showScreen('main-menu')
+                screens['game-play'].reset(); // reset game and generate new terrain
+                screens['game-play'].stopGame(); // stop game from running
+                game.toggleDialog('pause-menu'); // hide pause menu
+                game.showScreen('main-menu'); // go to main menu
             });
     }
 
