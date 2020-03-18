@@ -55,7 +55,12 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         myKeyboard.register(controls['Rotate Right'], spaceShip.rotateRight);
         myKeyboard.register(controls['Thrust'], function(elapsedTime){
             spaceShip.applyThrust(elapsedTime);
-            thrustSound.playSound();
+            if(spaceShip.fuel > 0) {
+                thrustSound.playSound();
+            }
+            else {
+                thrustSound.stopSound();
+            }
         });
         myKeyboard.registerToggle(controls['Thrust'], function(elapsedTime){
             thrustSound.stopSound();
@@ -315,7 +320,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         if (countdownTime <= 3499 && countdownTime >= 0 && !gameWon && !gameOver) {
             renderer.ScreenText.renderCountdown(countdownTime);
         }
-        if (gameOver) {
+        if (gameOver && countdownTime <= 0) {
             renderer.ScreenText.renderGameOver(score);
         }
         if (showLandText && level === 1) {

@@ -61,20 +61,24 @@ MyGame.objects.SpaceShip = function(spec) {
     }
 
     function applyThrust(elapsedTime){
-        spec.speed.x += (spec.thrustPower * elapsedTime) * Math.sin(rotation);
-        spec.speed.y -= (spec.thrustPower * elapsedTime) * Math.cos(rotation);
+        if (spec.fuel > 0) {
+            spec.speed.x += (spec.thrustPower * elapsedTime) * Math.sin(rotation);
+            spec.speed.y -= (spec.thrustPower * elapsedTime) * Math.cos(rotation);
 
-        if (spec.speed.y < spec.minSpeed.y) {
-            spec.speed.y = spec.minSpeed.y;
+            if (spec.speed.y < spec.minSpeed.y) {
+                spec.speed.y = spec.minSpeed.y;
+            }
+            if (spec.speed.x > spec.maxSpeed.x) {
+                spec.speed.x = spec.maxSpeed.x;
+            }
+            else if (spec.speed.x < spec.minSpeed.x) {
+                spec.speed.x = spec.minSpeed.x;
+            }
+            spec.fuel -= elapsedTime/100;
         }
-        if (spec.speed.x > spec.maxSpeed.x) {
-            spec.speed.x = spec.maxSpeed.x;
+        else if (spec.fuel < 0) {
+            spec.fuel = 0;
         }
-        else if (spec.speed.x < spec.minSpeed.x) {
-            spec.speed.x = spec.minSpeed.x;
-        }
-
-        spec.fuel -= elapsedTime/100;
     }
 
     function toggleFreeze(isFrozen) {

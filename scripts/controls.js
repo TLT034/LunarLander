@@ -1,9 +1,11 @@
-MyGame.screens['controls'] = (function(game, controls) {
+MyGame.screens['controls'] = (function(game, controls, objects) {
     'use strict';
 
     let waitingForInput = false;
+    let buttonMappedSound;
 
     function initialize() {
+        buttonMappedSound = objects.Sound({src: 'assets/menu-click.mp3', volume: .55, loop: false});
         // Initialize the controls to the arrow keys
         MyGame.controls['Thrust'] = 'ArrowUp';
         MyGame.controls['Rotate Left'] = 'ArrowLeft';
@@ -53,6 +55,7 @@ MyGame.screens['controls'] = (function(game, controls) {
         function addKey(event) {
             controls[control] = event.key;
             waitingForInput = false;
+            buttonMappedSound.playSound();
         }
 
         window.addEventListener('keydown', addKey);
@@ -80,4 +83,4 @@ MyGame.screens['controls'] = (function(game, controls) {
         initialize : initialize,
         run : run
     };
-}(MyGame.game, MyGame.controls));
+}(MyGame.game, MyGame.controls, MyGame.objects));
