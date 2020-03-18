@@ -6,6 +6,9 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
     let showNextLevelText = false;
     let showLandText = false;
     let level = 1;
+    let thrustSound;
+    let explosionSound;
+    let backgroundMusic;
 
     let lastTimeStamp,
         cancelNextRequest,
@@ -44,12 +47,19 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         myKeyboard.deregister(controls['Rotate Left']);
         myKeyboard.deregister(controls['Rotate Right']);
         myKeyboard.deregister(controls['Thrust']);
+        myKeyboard.deregisterToggle(controls['Thrust']);
     }
 
     function shipControlsOn(){
         myKeyboard.register(controls['Rotate Left'], spaceShip.rotateLeft);
         myKeyboard.register(controls['Rotate Right'], spaceShip.rotateRight);
-        myKeyboard.register(controls['Thrust'], spaceShip.applyThrust);
+        myKeyboard.register(controls['Thrust'], function(elapsedTime){
+            spaceShip.applyThrust(elapsedTime);
+            thrustSound.playSound();
+        });
+        myKeyboard.registerToggle(controls['Thrust'], function(elapsedTime){
+            thrustSound.stopSound();
+        });
     }
 
     function generateTerrain(level) {
@@ -226,6 +236,10 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
             showNextLevelText = false;
             reset(2, spaceShip.fuel * (3 - spaceShip.verticalSpeed));
         }
+        else if (countdownTime <= 0 && gameOver) {
+            game.toggleDialog('game-over-menu');
+            cancelNextRequest = true;
+        }
         else if (countdownTime <= 0) {
             shipControlsOn();
             spaceShip.toggleFreeze(false);
@@ -248,11 +262,13 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
     }
 
     function gameOverSequence() {
-        cancelNextRequest = true;
-        score = Math.round(score);
         gameOver = true;
+        countdownTime = 3000;
+        thrustSound.stopSound();
+        backgroundMusic.stopSound();
+        explosionSound.playSound();
+        score = Math.round(score);
         screens['high-scores'].updateMostRecentScore(score);
-        game.toggleDialog('game-over-menu');
     }
 
     function winSequence() {
@@ -278,7 +294,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
     }
 
     function update(elapsedTime) {
-        if (countdownTime <= 0 && !gamePaused && !gameWon) {
+        if (countdownTime <= 0 && !gamePaused && !gameWon && !gameOver) {
             spaceShip.move();
             checkCollision();
         }
@@ -296,7 +312,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
             verticalSpeed: spaceShip.verticalSpeed,
             angle: spaceShip.angle
         });
-        if (countdownTime <= 3499 && countdownTime >= 0 && !gameWon) {
+        if (countdownTime <= 3499 && countdownTime >= 0 && !gameWon && !gameOver) {
             renderer.ScreenText.renderCountdown(countdownTime);
         }
         if (gameOver) {
@@ -328,23 +344,27 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
 
     function reset(levelToLoad = 1, lvlOneScore = 0) {
         resetValues(levelToLoad, lvlOneScore);
-        initialize();
+        terrain = generateTerrain(level);
     }
 
     function initialize() {
+        thrustSound = objects.Sound({src: 'assets/thrust1.mp3', volume: 1, loop: true});
+        explosionSound = objects.Sound({src: 'assets/explosion.mp3', volume: .75, loop: false});
+        backgroundMusic = objects.Sound({src: 'assets/menu-music.mp3', volume: .04, loop: true});
         terrain = generateTerrain(level);
     }
 
     function run() {
         resetValues();
+        backgroundMusic.playSound();
         myKeyboard.registerToggle('Escape', function(){togglePauseGame();});
-        console.log(myKeyboard.toggleHandlers);
         requestAnimationFrame(gameLoop);
     }
 
     function stopGame() {
         cancelNextRequest = true;
         myKeyboard.deregisterToggle('Escape');
+        backgroundMusic.stopSound();
     }
 
 

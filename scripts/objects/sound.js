@@ -25,10 +25,6 @@ MyGame.objects.Sound = function(spec) {
         }
     }
 
-    function isPlaying() {
-        return !sound.paused;
-    }
-
     return {
         playSound : playSound,
         stopSound : stopSound
