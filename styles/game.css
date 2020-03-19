@@ -72,14 +72,6 @@ ul.menu li button:active {
     text-align: center;
 }
 
-#high-scores ol {
-    text-align: center;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    color: #f5eaea;
-}
-
 #game div p {
     font-size: 1em;
     color: #f5eaea;
@@ -110,4 +102,19 @@ ul.menu li button:active {
     margin-top: 12em;
 }
 
+#high-scores ol {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: #f5eaea;
+}
+
+#high-score-list {
+    font-size: 1.5em;
+}
+
+#high-scores h1 {
+    margin-bottom: 0;
+}
 

@@ -20,7 +20,6 @@ function radToDeg(radians){
 //         minSpeed: {x: , y: },
 //         gravity: ,
 //         thrustPower: ,
-//         thrustActive: bool,
 //         fuel: num
 // }
 //
@@ -62,6 +61,9 @@ MyGame.objects.SpaceShip = function(spec) {
 
     function applyThrust(elapsedTime){
         if (spec.fuel > 0) {
+            let posX = spec.center.x - Math.sin(rotation) * (spec.size.width/2);
+            let posY = spec.center.y + Math.cos(rotation) * (spec.size.width/2);
+            spec.emitThrustParticles(elapsedTime, rotation + Math.PI, {x: posX, y: posY});
             spec.speed.x += (spec.thrustPower * elapsedTime) * Math.sin(rotation);
             spec.speed.y -= (spec.thrustPower * elapsedTime) * Math.cos(rotation);
 
@@ -78,6 +80,9 @@ MyGame.objects.SpaceShip = function(spec) {
         }
         else if (spec.fuel < 0) {
             spec.fuel = 0;
+        }
+        else {
+            spec.stopThrustParticles();
         }
     }
 

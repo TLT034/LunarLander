@@ -6,9 +6,39 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
     let showNextLevelText = false;
     let showLandText = false;
     let level = 1;
-    let thrustSound;
-    let explosionSound;
-    let backgroundMusic;
+
+    let imageSmoke = new Image();
+    imageSmoke.src = 'assets/smoke.png';
+    let imageThrust = new Image();
+    imageThrust.src = 'assets/smoke.png';
+    let imageFire = new Image();
+    imageFire.src = 'assets/fire.png';
+
+
+    let fireParticleSystem = objects.ParticleSystem(graphics, {
+        image: imageFire,
+        center: { x: graphics.canvas.width / 2, y: graphics.canvas.height / 5},
+        size: {mean: 20, stdev: 3},
+        speed: { mean: .08, stdev: 0.02},
+        lifetime: { mean: 700, stdev: 100}
+    });
+
+    let smokeParticleSystem = objects.ParticleSystem(graphics, {
+        image: imageSmoke,
+        center: {x: 300, y: 300},
+        size: {mean: 15, stdev: 3},
+        speed: { mean: .05, stdev: 0.02},
+        lifetime: { mean: 2000, stdev: 500}
+    });
+
+    let thrustParticleSystem = objects.ParticleSystem(graphics, {
+        image: imageThrust,
+        center: {x: 300, y: 300},
+        size: {mean: 15, stdev: 3},
+        speed: { mean: 0, stdev: 0.08},
+        lifetime: { mean: 250, stdev: 100}
+    });
+
 
     let lastTimeStamp,
         cancelNextRequest,
@@ -17,9 +47,16 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         gameWon,
         countdownTime,
         spaceShip,
-        score;
+        score,
+        thrustSound,
+        explosionSound,
+        successSound,
+        backgroundMusic;
 
     function resetValues(levelToLoad = 1, lvlOneScore = 0) {
+        fireParticleSystem.clearParticles();
+        smokeParticleSystem.clearParticles();
+        thrustParticleSystem.clearParticles();
         lastTimeStamp = performance.now();
         level = levelToLoad;
         cancelNextRequest = false;
@@ -36,7 +73,8 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
             minSpeed: {x: -2, y: -2},
             gravity: .01,
             thrustPower: .0025,
-            thrustActive: false,
+            emitThrustParticles: thrustParticleSystem.startShipThrust,
+            stopThrustParticles: thrustParticleSystem.clearParticles,
             fuel: 100,
             freeze: true
         });
@@ -64,6 +102,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         });
         myKeyboard.registerToggle(controls['Thrust'], function(elapsedTime){
             thrustSound.stopSound();
+            thrustParticleSystem.clearParticles();
         });
     }
 
@@ -195,8 +234,6 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
 
         // if there is a collision, freeze the ship, turn off controls, and run an end of game sequence
         if (collisionPoints.length > 0) {
-            spaceShip.toggleFreeze(true);
-            shipControlsOff();
             if (safeLanding) {
                 winSequence();
             }
@@ -242,6 +279,8 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
             reset(2, spaceShip.fuel * (3 - spaceShip.verticalSpeed));
         }
         else if (countdownTime <= 0 && gameOver) {
+            fireParticleSystem.clearParticles();
+            smokeParticleSystem.clearParticles();
             game.toggleDialog('game-over-menu');
             cancelNextRequest = true;
         }
@@ -267,16 +306,24 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
     }
 
     function gameOverSequence() {
-        gameOver = true;
-        countdownTime = 3000;
+        shipControlsOff();
+        spaceShip.toggleFreeze(true);
         thrustSound.stopSound();
         backgroundMusic.stopSound();
+        thrustParticleSystem.clearParticles();
         explosionSound.playSound();
+        gameOver = true;
+        countdownTime = 3000;
         score = Math.round(score);
         screens['high-scores'].updateMostRecentScore(score);
     }
 
     function winSequence() {
+        spaceShip.toggleFreeze(true);
+        shipControlsOff();
+        thrustSound.stopSound();
+        thrustParticleSystem.clearParticles();
+        successSound.playSound();
         // if going from level one to two, else end of level two / the game.
         if (level === 1) {
             showLandText = true;
@@ -306,12 +353,18 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         else if (countdownTime >= 0 && !gamePaused) {
             updateCountdown(elapsedTime);
         }
+        if (gameOver) {
+            fireParticleSystem.shipExplosion(elapsedTime, spaceShip.center);
+            smokeParticleSystem.shipExplosion(elapsedTime, spaceShip.center);
+        }
     }
 
     function render() {
         graphics.clear();
         renderer.Terrain.render(terrain);
-        renderer.SpaceShip.render(spaceShip);
+        if (!gameOver) {
+            renderer.SpaceShip.render(spaceShip);
+        }
         renderer.ScreenText.renderShipInfo({
             fuel: spaceShip.fuel,
             verticalSpeed: spaceShip.verticalSpeed,
@@ -332,6 +385,9 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
         else if (showNextLevelText) {
             renderer.ScreenText.renderNextLevel();
         }
+        thrustParticleSystem.render();
+        smokeParticleSystem.render();
+        fireParticleSystem.render();
     }
 
     function gameLoop(time) {
@@ -355,6 +411,7 @@ MyGame.screens['game-play'] = (function(game, objects, renderer, graphics, input
     function initialize() {
         thrustSound = objects.Sound({src: 'assets/thrust1.mp3', volume: 1, loop: true});
         explosionSound = objects.Sound({src: 'assets/explosion.mp3', volume: .75, loop: false});
+        successSound = objects.Sound({src: 'assets/success.mp3', volume: .55, loop: false});
         backgroundMusic = objects.Sound({src: 'assets/menu-music.mp3', volume: .04, loop: true});
         terrain = generateTerrain(level);
     }
