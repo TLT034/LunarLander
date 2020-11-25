@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5b0b2b8a-111c-440f-aaca-308afa856e4d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/game-play.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/game-play.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/objects/space-ship.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/objects/space-ship.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/styles/game.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/game.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,7 +35,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js.buildTools.grunt.grunt-cli.package" value="" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -92,6 +89,16 @@
       <workItem from="1584402131088" duration="12032000" />
       <workItem from="1584467444124" duration="27575000" />
       <workItem from="1584556320814" duration="13461000" />
+      <workItem from="1585515440446" duration="7297000" />
+      <workItem from="1585616824098" duration="606000" />
+      <workItem from="1585937017759" duration="2936000" />
+      <workItem from="1585952369953" duration="1552000" />
+      <workItem from="1586465026252" duration="3014000" />
+      <workItem from="1586491681048" duration="5000" />
+      <workItem from="1586725193588" duration="1248000" />
+      <workItem from="1586797336292" duration="8000" />
+      <workItem from="1586797351776" duration="606000" />
+      <workItem from="1586890761487" duration="1874000" />
     </task>
     <servers />
   </component>
@@ -107,9 +114,10 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="399" y="503" key="#com.intellij.fileTypes.FileTypeChooser/-3840.-514.2560.1413/0.0.2560.1400@0.0.2560.1400" timestamp="1584496028954" />
-    <state x="1060" y="476" key="FileChooserDialogImpl" timestamp="1584482672135">
+    <state x="1060" y="476" key="FileChooserDialogImpl" timestamp="1586797356856">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
+    <state x="1060" y="476" key="FileChooserDialogImpl/-3840.-295.2560.1413/0.0.2560.1400@0.0.2560.1400" timestamp="1586797356856" />
     <state x="1060" y="476" key="FileChooserDialogImpl/-3840.-514.2560.1413/0.0.2560.1400@0.0.2560.1400" timestamp="1584482672135" />
   </component>
 </project>
